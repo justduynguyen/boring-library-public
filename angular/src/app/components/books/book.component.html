@@ -1,0 +1,81 @@
+<div class="available__books">
+    <div class="flex flex-row w-full">
+        <h1 class="text-xl font-bold py-2 flex-1">Available Books</h1>
+        <button nz-button [nzType]="'primary'" (click)="showAddBook()"><span>Add
+                book</span></button>
+        <nz-modal [(nzVisible)]="isVisibleAddBookForm" nzTitle="Adding Book" (nzOnCancel)="cancelAddBook()"
+            (nzOnOk)="submitAddBook()">
+            <ng-container *nzModalContent>
+                <form nz-form [formGroup]="addBookForm" class="login-form">
+                    <nz-form-item>
+                        <nz-form-control nzErrorTip="Please input book name!">
+                            <input type="text" nz-input formControlName="name" placeholder="Book name" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <div class="grid grid-cols-2 gap-x-4">
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Please input book credit!">
+                                <input type="number" minlength="1" nz-input formControlName="credit"
+                                    placeholder="Book credit" />
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="Please input book quantity!">
+                                <input type="number" minlength="1" nz-input formControlName="quantity"
+                                    placeholder="Book quantity" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </form>
+            </ng-container>
+        </nz-modal>
+    </div>
+    <nz-table #bookTable nzShowSizeChanger [nzData]="books" (nzQueryParams)="onQueryParamsChangeAvailableBooks($event)"
+        [nzFrontPagination]="false" nzShowSizeChanger [nzTotal]="booksTotal">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Credit</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of bookTable.data">
+                <td>{{ data.name }}</td>
+                <td>{{ data.credit }}</td>
+                <td>{{ data.quantity }}</td>
+                <td>
+                    <button nz-button nzType="primary" (click)="borrow(data)">Borrow</button>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+</div>
+
+<div class="borrowing__books">
+    <h1 class="text-xl font-bold py-2">Borrowing Books</h1>
+
+    <nz-tabset (nzSelectChange)="onChangeBorrowBookTab($event)">
+        <nz-tab *ngFor="let tab of borrowedTabs" nzTitle={{tab.name}}>
+            <nz-table #bookBorrowedTable nzShowSizeChanger [nzData]="booksBorrowed" [nzTotal]="booksBorrowedTotal"
+                [nzFrontPagination]="false" (nzQueryParams)="onQueryParamsChangeBorrowingBooks($event)">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Credit</th>
+                        <th>Due Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of bookBorrowedTable.data">
+                        <td>{{ data.bookName }}</td>
+                        <td>{{ data.bookCredit }}</td>
+                        <td>{{ data.dueDate }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </nz-tab>
+    </nz-tabset>
+</div>

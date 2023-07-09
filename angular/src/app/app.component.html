@@ -1,0 +1,16 @@
+<nz-layout class="flex flex-col w-full h-full">
+  <nz-header>
+    <div class="logo"></div>
+    <ul nz-menu nzTheme="dark" nzMode="horizontal">
+      <div *ngIf="userService.isLogged" class="text-white flex flex-row w-full justify-end items-center space-x-4">
+        <span>Credit: {{userService.currentUserCredit}}</span>
+        <button nz-button nzType="primary" (click)="logout()">Logout</button>
+      </div>
+    </ul>
+  </nz-header>
+  <nz-content class="flex flex-col p-4 h-full overflow-auto">
+    <div class="inner-content h-full">
+      <router-outlet></router-outlet>
+    </div>
+  </nz-content>
+</nz-layout>
